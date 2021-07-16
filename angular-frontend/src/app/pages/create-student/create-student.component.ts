@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Student } from '../student';
-import { StudentService } from '../student.service';
+import { Student } from '../../student';
+import { StudentService } from '../../student.service';
 
 @Component({
   selector: 'app-create-student',
@@ -10,10 +10,16 @@ import { StudentService } from '../student.service';
   styleUrls: ['./create-student.component.css']
 })
 
+
 export class CreateStudentComponent implements OnInit {
+
+  
+
   exform: any;
   student: Student = new Student();
   constructor(private studentService:StudentService, private router:Router) { }
+
+
 
   ngOnInit(): void {
     this.exform = new FormGroup({

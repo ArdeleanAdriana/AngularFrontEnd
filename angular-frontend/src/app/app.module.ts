@@ -1,12 +1,12 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-import {HttpClientModule} from '@angular/common/http'
+import { HttpClientModule } from '@angular/common/http'
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { StudentListComponent } from './student-list/student-list.component';
-import { CreateStudentComponent } from './create-student/create-student.component';
+import { StudentListComponent } from './pages/student-list/student-list.component';
+import { CreateStudentComponent } from './pages/create-student/create-student.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { UpdateStudentComponent } from './update-student/update-student.component';
+import { UpdateStudentComponent } from './pages/update-student/update-student.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
@@ -27,4 +27,5 @@ import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
   providers: [],
   bootstrap: [AppComponent]
 })
+
 export class AppModule { }

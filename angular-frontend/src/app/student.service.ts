@@ -3,16 +3,16 @@ import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { Student } from './student';
 import { environment } from 'src/environments/environment';
+
 @Injectable({
   providedIn: 'root'
 })
+
 export class StudentService {
 
-  private baseUrl = `${environment.apiURL}/students`;
- 
+  private baseUrl = `${environment.apiURL}/students`; 
   
   constructor(private httpClient:HttpClient) { }
-
 
   public getStudentList(): Observable<Student[]>{
     return this.httpClient.get<Student[]>(`${this.baseUrl}`);
@@ -26,8 +26,8 @@ export class StudentService {
     return this.httpClient.get<Student>(`${this.baseUrl}/${id}`);
   }
 
-  public updateStudent(student:Student): Observable<Object>{
-    return this.httpClient.put(`${this.baseUrl}`,student);
+  public updateStudent(student:Student, id: number): Observable<Object>{
+    return this.httpClient.put(`${this.baseUrl}/${id}`,student);
   }
 
   public deleteStudent (id: number): Observable<Object>{

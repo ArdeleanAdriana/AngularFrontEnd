@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Student } from '../student';
-import { StudentService } from '../student.service';
+import { Student } from '../../student';
+import { StudentService } from '../../student.service';
 import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 
 @Component({

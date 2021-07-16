@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Student } from '../student';
-import { StudentService } from '../student.service';
+import { Student } from '../../student';
+import { StudentService } from '../../student.service';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
@@ -9,6 +9,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
   templateUrl: './update-student.component.html',
   styleUrls: ['./update-student.component.css']
 })
+
 export class UpdateStudentComponent implements OnInit {
   exform: any;
   student: Student =new Student();
@@ -42,7 +43,7 @@ export class UpdateStudentComponent implements OnInit {
 
   public onSubmit(){
 
-    this.studentService.updateStudent(this.student).subscribe( data =>{
+    this.studentService.updateStudent(this.student, this.student.id).subscribe( data =>{
       this.goToStudentList();
     }, error =>console.log(error));
    
