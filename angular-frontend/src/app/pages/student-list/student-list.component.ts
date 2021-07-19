@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { Student } from '../../student';
-import { StudentService } from '../../student.service';
-import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
+import { Student } from '../../model/student';
+import { StudentService } from '../../service/student.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-student-list',

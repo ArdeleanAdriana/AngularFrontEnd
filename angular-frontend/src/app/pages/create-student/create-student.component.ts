@@ -1,8 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { Student } from '../../student';
-import { StudentService } from '../../student.service';
+import { StudentService } from '../../service/student.service';
 
 @Component({
   selector: 'app-create-student',
@@ -13,33 +12,37 @@ import { StudentService } from '../../student.service';
 
 export class CreateStudentComponent implements OnInit {
 
-  
-
   exform: any;
-  student: Student = new Student();
-  constructor(private studentService:StudentService, private router:Router) { }
+  constructor(private formBuilder:FormBuilder, private studentService:StudentService, private router:Router) { }
 
 
 
   ngOnInit(): void {
-    this.exform = new FormGroup({
-      'name' : new FormControl(null, Validators.required),
-      'email' : new FormControl(null, [Validators.required, Validators.email]),
-      'university' : new FormControl (null, Validators.required),
-      'phone' : new FormControl (
-        null,
+    this.exform = this.formBuilder.group({
+      name : ['', Validators.required],
+      email : ['', [Validators.required, Validators.email]],
+      university : ['', Validators.required],
+      phone : ['',
         [
           Validators.required,
           Validators.pattern('^[0-9]{10}$')
         ]
-      )
+      ]
     });
   }
 
-  public saveStudent(){
-    this.studentService.createStudent(this.student).subscribe(data =>{
-      console.log(data);
-    }, error => console.log(error));
+  get formControls() { return this.exform.controls; }
+
+  saveStudent(): void {
+    this.studentService.createStudent(this.exform.value)
+    .subscribe(
+    response => {
+    console.log(response);
+    this.goToStudentList();
+    },
+    error => {
+    console.log(error);
+    });
   }
 
   public goToStudentList(){
@@ -47,23 +50,11 @@ export class CreateStudentComponent implements OnInit {
   }
 
  public onSubmit(){
-    console.log(this.student);
+
+    if (this.exform.invalid) {
+      return;
+    }
     this.saveStudent();
   }
 
-  get name(){
-    return this.exform.get('name');
-  }
-
-  get email(){
-    return this.exform.get('email');
-  }
-
-  get university(){
-    return this.exform.get('university');
-  }
-  
-  get phone(){
-    return this.exform.get('phone');
-  }
 }

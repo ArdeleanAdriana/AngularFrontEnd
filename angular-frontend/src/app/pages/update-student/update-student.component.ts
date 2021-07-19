@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { Student } from '../../student';
-import { StudentService } from '../../student.service';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { Student } from '../../model/student';
+import { StudentService } from '../../service/student.service';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-update-student',
@@ -12,61 +12,76 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 
 export class UpdateStudentComponent implements OnInit {
   exform: any;
-  student: Student =new Student();
-  constructor(private studentService: StudentService,
+  currentStudent: Student =new Student();
+  
+  constructor(private formBuilder: FormBuilder,
+    private studentService: StudentService,
     private route: ActivatedRoute,
     private router: Router) { }
 
   ngOnInit(): void {
     this.getStudent( this.route.snapshot.paramMap.get('id'));
-    this.exform = new FormGroup({
-      'name' : new FormControl(null, Validators.required),
-      'email' : new FormControl(null, [Validators.required, Validators.email]),
-      'university' : new FormControl (null, Validators.required),
-      'phone' : new FormControl (
-        null,
+
+   this.exform = this.formBuilder.group({
+      name : ['', Validators.required],
+      email : ['', [Validators.required, Validators.email]],
+      university : ['', Validators.required],
+      phone : ['',
         [
           Validators.required,
           Validators.pattern('^[0-9]{10}$')
         ]
-      )
+      ]
     });
     
   }
 
+  get formControls() { return this.exform.controls; }
+
   public getStudent(id:any): void{
     this.studentService.getStudentById(id).subscribe(data =>{
-      this.student =data;
+      this.currentStudent =data;
+      this.updateFormValues();
       console.log(data);
     }, error => {console.log(error);});
   }
 
-  public onSubmit(){
-
-    this.studentService.updateStudent(this.student, this.student.id).subscribe( data =>{
-      this.goToStudentList();
-    }, error =>console.log(error));
-   
-
+  updateFormValues() {
+    this.exform.patchValue({
+    name: this.currentStudent.name,
+    email: this.currentStudent.email,
+    university: this.currentStudent.university,
+    phone: this.currentStudent.phone,
+    });
   }
+
+  public onSubmit(){
+    if (this.exform.invalid) {
+      return;
+    }
+      
+    this.updateStudent();
+  }
+
   goToStudentList(){
     this.router.navigate(['']);
   }
 
-  get name(){
-    return this.exform.get('name');
+  updateStudent(): void {
+    this.currentStudent.name=this.exform.value.name;
+    this.currentStudent.email=this.exform.value.email;
+    this.currentStudent.phone=this.exform.value.phone;
+    this.currentStudent.university=this.exform.value.university;
+   
+    this.studentService.updateStudent(this.currentStudent, this.currentStudent.id)
+    .subscribe(
+    response => {
+    console.log(response);
+    this.goToStudentList();
+    },
+    error => {
+    console.log(error);
+    });
   }
 
-  get email(){
-    return this.exform.get('email');
-  }
-
-  get university(){
-    return this.exform.get('university');
-  }
-  
-  get phone(){
-    return this.exform.get('phone');
-  }
-  
 }
